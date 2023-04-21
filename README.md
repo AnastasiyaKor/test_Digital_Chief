@@ -13,3 +13,10 @@
 ### 6) spring-boot-starter-test
 Зависимость позволяет написать тесты для проекта
 
+## Запуск приложения:
+через командную строку:
+- введите docker-compose up
+
+через IntelliJ IDEA:
+- запустите команду mvn package;
+- запустите файл docker-compose
