@@ -1,0 +1,675 @@
+{
+	"info": {
+		"_postman_id": "c45bd528-d8b7-4be7-9693-e6396904a5b1",
+		"name": "Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22839781"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "user create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Test create user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.email, '\"email\" field').to.eql('gleb@mail.ru');\r",
+									"    pm.expect(jsonData.name, '\"name\" field').to.eql('Gleb');\r",
+									"    pm.expect(jsonData.phoneNumber, '\"phoneNumber\" field').to.eql('89993263232')\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Gleb\",\r\n  \"email\": \"gleb@mail.ru\",\r\n  \"phoneNumber\": \"89993263232\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Test update user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.name, '\"name\" field').to.eql('updateGleb');\r",
+									"    pm.expect(jsonData.email, '\"email\" field').to.eql('updateGleb@mail.ru');\r",
+									"    pm.expect(jsonData.phoneNumber, '\"phoneNumber\" field').to.eql('89993263232');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"updateGleb\",\r\n    \"email\": \"updateGleb@mail.ru\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user2 create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Lev\",\r\n  \"email\": \"lev@mail.ru\",\r\n  \"phoneNumber\": \"89993263030\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Test get all user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'users count in total').to.eql(2);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id, 'result[0]: \"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData[0].name, 'result[0]: \"name\" field').to.eql('updateGleb');\r",
+									"    pm.expect(jsonData[0].email, 'result[0]: \"email\" field').to.eql('updateGleb@mail.ru');\r",
+									"    pm.expect(jsonData[0].phoneNumber, 'result[0]: \"phoneNumber\" field').to.eql('89993263232');\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData[1].id, 'result[1]: \"id\" field').to.eql(2);\r",
+									"    pm.expect(jsonData[1].name, 'result[1]: \"name\" field').to.eql('Lev');\r",
+									"    pm.expect(jsonData[1].email, 'result[1]: \"email\" field').to.eql('lev@mail.ru');\r",
+									"    pm.expect(jsonData[1].phoneNumber, 'result[1]: \"phoneNumber\" field').to.eql('89993263030');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user2 delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Test get user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.name, '\"name\" field').to.eql('updateGleb');\r",
+									"    pm.expect(jsonData.email, '\"email\" field').to.eql('updateGleb@mail.ru');\r",
+									"    pm.expect(jsonData.phoneNumber, '\"phoneNumber\" field').to.eql('89993263232');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cars",
+			"item": [
+				{
+					"name": "car create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Test create user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.stamp, '\"stamp\" field').to.eql('Ford');\r",
+									"    pm.expect(jsonData.model, '\"model\" field').to.eql('focus');\r",
+									"    pm.expect(jsonData.year, '\"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData.transmission, '\"transmission\" field').to.eql('автоматическая');\r",
+									"    pm.expect(jsonData.carBody, '\"carBody\" field').to.eql('хэтчбэк');\r",
+									"    pm.expect(jsonData.carColorBody, '\"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData.engineCapacity, '\"engineCapacity\" field').to.eql('1.6');\r",
+									"    pm.expect(jsonData.fuelType, '\"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData.drive, '\"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData.wheel, '\"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData.stateNumber, '\"stateNumber\" field').to.eql('Н314НН174');\r",
+									"    pm.expect(jsonData.owner, '\"owner\" field').to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"stamp\": \"Ford\",\r\n  \"model\": \"focus\",\r\n  \"year\": 2007,\r\n  \"transmission\": \"автоматическая\",\r\n  \"carBody\": \"хэтчбэк\",\r\n  \"carColorBody\": \"черный\",\r\n  \"engineCapacity\": \"1.6\",\r\n  \"fuelType\": \"бензиновый\",\r\n  \"drive\": \"передний привод\",\r\n  \"wheel\": \"левый\",\r\n  \"stateNumber\": \"Н314НН174\",\r\n  \"owner\": 1\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cars",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "car2 create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Test create user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(2);\r",
+									"    pm.expect(jsonData.stamp, '\"stamp\" field').to.eql('Honda');\r",
+									"    pm.expect(jsonData.model, '\"model\" field').to.eql('Accord');\r",
+									"    pm.expect(jsonData.year, '\"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData.transmission, '\"transmission\" field').to.eql('механическая');\r",
+									"    pm.expect(jsonData.carBody, '\"carBody\" field').to.eql('седан');\r",
+									"    pm.expect(jsonData.carColorBody, '\"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData.engineCapacity, '\"engineCapacity\" field').to.eql('2.0');\r",
+									"    pm.expect(jsonData.fuelType, '\"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData.drive, '\"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData.wheel, '\"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData.stateNumber, '\"stateNumber\" field').to.eql('Х514ХХ174');\r",
+									"    pm.expect(jsonData.owner, '\"owner\" field').to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"stamp\": \"Honda\",\r\n  \"model\": \"Accord\",\r\n  \"year\": 2007,\r\n  \"transmission\": \"механическая\",\r\n  \"carBody\": \"седан\",\r\n  \"carColorBody\": \"черный\",\r\n  \"engineCapacity\": \"2.0\",\r\n  \"fuelType\": \"бензиновый\",\r\n  \"drive\": \"передний привод\",\r\n  \"wheel\": \"левый\",\r\n  \"stateNumber\": \"Х514ХХ174\",\r\n  \"owner\": 1\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cars",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "car update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Test create user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.stamp, '\"stamp\" field').to.eql('Ford');\r",
+									"    pm.expect(jsonData.model, '\"model\" field').to.eql('focus');\r",
+									"    pm.expect(jsonData.year, '\"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData.transmission, '\"transmission\" field').to.eql('автоматическая');\r",
+									"    pm.expect(jsonData.carBody, '\"carBody\" field').to.eql('хэтчбэк');\r",
+									"    pm.expect(jsonData.carColorBody, '\"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData.engineCapacity, '\"engineCapacity\" field').to.eql('1.6');\r",
+									"    pm.expect(jsonData.fuelType, '\"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData.drive, '\"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData.wheel, '\"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData.stateNumber, '\"stateNumber\" field').to.eql('А314АА174');\r",
+									"    pm.expect(jsonData.owner, '\"owner\" field').to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"stateNumber\": \"А314АА174\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cars/:carId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars",
+								":carId"
+							],
+							"variable": [
+								{
+									"key": "carId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Test get all cars\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'cars count in total').to.eql(2);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id, 'result[1]: \"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData[1].stamp, 'result[1]: \"stamp\" field').to.eql('Ford');\r",
+									"    pm.expect(jsonData[1].model, 'result[1]: \"model\" field').to.eql('focus');\r",
+									"    pm.expect(jsonData[1].year, 'result[1]: \"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData[1].transmission, 'result[1]: \"transmission field').to.eql('автоматическая');\r",
+									"    pm.expect(jsonData[1].carBody, 'result[1]: \"carBody\" field').to.eql('хэтчбэк');\r",
+									"    pm.expect(jsonData[1].carColorBody, 'result[1]: \"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData[1].engineCapacity, 'result[1]: \"engineCapacity\" field').to.eql('1.6');\r",
+									"    pm.expect(jsonData[1].fuelType, 'result[1]: \"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData[1].drive, 'result[1]: \"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData[1].wheel, 'result[1]: \"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData[1].stateNumber, 'result[1]: \"stateNumber\" field').to.eql('А314АА174');\r",
+									"    pm.expect(jsonData[1].owner, 'result[1]: \"owner\" field').to.eql(1);\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData[0].id, 'result[0]: \"id\" field').to.eql(2);\r",
+									"    pm.expect(jsonData[0].stamp, 'result[0]: \"stamp\" field').to.eql('Honda');\r",
+									"    pm.expect(jsonData[0].model, 'result[0]: \"model\" field').to.eql('Accord');\r",
+									"    pm.expect(jsonData[0].year, 'result[0]: \"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData[0].transmission, 'result[0]: \"transmission field').to.eql('механическая');\r",
+									"    pm.expect(jsonData[0].carBody, 'result[0]: \"carBody\" field').to.eql('седан');\r",
+									"    pm.expect(jsonData[0].carColorBody, 'result[0]: \"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData[0].engineCapacity, 'result[0]: \"engineCapacity\" field').to.eql('2.0');\r",
+									"    pm.expect(jsonData[0].fuelType, 'result[0]: \"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData[0].drive, 'result[0]: \"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData[0].wheel, 'result[0]: \"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData[0].stateNumber, 'result[0]: \"stateNumber\" field').to.eql('Х514ХХ174');\r",
+									"    pm.expect(jsonData[0].owner, 'result[0]: \"owner\" field').to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cars",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "car2 delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cars/:carId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars",
+								":carId"
+							],
+							"variable": [
+								{
+									"key": "carId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Test get user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);\r",
+									"    pm.expect(jsonData.stamp, '\"stamp\" field').to.eql('Ford');\r",
+									"    pm.expect(jsonData.model, '\"model\" field').to.eql('focus');\r",
+									"    pm.expect(jsonData.year, '\"year\" field').to.eql(2007);\r",
+									"    pm.expect(jsonData.transmission, '\"transmission\" field').to.eql('автоматическая');\r",
+									"    pm.expect(jsonData.carBody, '\"carBody field').to.eql('хэтчбэк');\r",
+									"    pm.expect(jsonData.carColorBody, '\"carColorBody\" field').to.eql('черный');\r",
+									"    pm.expect(jsonData.engineCapacity, '\"engineCapacity\" field').to.eql('1.6');\r",
+									"    pm.expect(jsonData.fuelType, '\"fuelType\" field').to.eql('бензиновый');\r",
+									"    pm.expect(jsonData.drive, '\"drive\" field').to.eql('передний привод');\r",
+									"    pm.expect(jsonData.wheel, '\"wheel\" field').to.eql('левый');\r",
+									"    pm.expect(jsonData.stateNumber, '\"stateNumber\" field').to.eql('А314АА174');\r",
+									"    pm.expect(jsonData.owner, '\"owner\" field').to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cars/:carId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cars",
+								":carId"
+							],
+							"variable": [
+								{
+									"key": "carId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
